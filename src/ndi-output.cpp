@@ -328,24 +328,25 @@ void ndi_output_rawvideo(void *data, video_data *frame)
 	video_frame.FourCC = o->frame_fourcc;
 
 	if (video_frame.FourCC == NDIlib_FourCC_type_UYVY) {
-		o->conv_function(frame->data, frame->linesize, 0, height, o->conv_buffer, o->conv_linesize);
-		video_frame.p_data = o->conv_buffer;
-		video_frame.line_stride_in_bytes = o->conv_linesize;
-	} else {
-		video_frame.p_data = frame->data[0];
-		video_frame.line_stride_in_bytes = frame->linesize[0];
-	}
-	static const char* test_xml_data = 
+        o->conv_function(frame->data, frame->linesize, 0, height, o->conv_buffer, o->conv_linesize);
+        video_frame.p_data = o->conv_buffer;
+        video_frame.line_stride_in_bytes = o->conv_linesize;
+    } else {
+        video_frame.p_data = frame->data[0];
+        video_frame.line_stride_in_bytes = frame->linesize[0];
+    }
+
+    static const char *test_xml_data =
         "<FrameData>"
         "  <Bone ID=\"0\" X=\"500.0\" Y=\"300.0\" />"
         "  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
-		"  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
-		"  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
+        "  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
+        "  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
         "</FrameData>";
 
-    // 2. 直接挂载！没有任何复杂的逻辑，简单粗暴。
     video_frame.p_metadata = test_xml_data;
-	ndiLib->send_send_video_async_v2(o->ndi_sender, &video_frame);
+
+    ndiLib->send_send_video_async_v2(o->ndi_sender, &video_frame);
 }
 
 void ndi_output_rawaudio(void *data, audio_data *frame)
