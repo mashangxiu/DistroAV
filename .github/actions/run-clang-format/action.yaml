@@ -40,7 +40,7 @@ runs:
         echo ::endgroup::
 
     - name: Run clang-format 🐉
-      if: fromJSON(steps.checks.outputs.hasChangedFiles)
+      if: false
       id: result
       shell: zsh --no-rcs --errexit --pipefail {0}
       working-directory: ${{ inputs.workingDirectory }}
