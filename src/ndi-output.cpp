@@ -335,7 +335,16 @@ void ndi_output_rawvideo(void *data, video_data *frame)
 		video_frame.p_data = frame->data[0];
 		video_frame.line_stride_in_bytes = frame->linesize[0];
 	}
+	static const char* test_xml_data = 
+        "<FrameData>"
+        "  <Bone ID=\"0\" X=\"500.0\" Y=\"300.0\" />"
+        "  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
+		"  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
+		"  <Bone ID=\"1\" X=\"600.0\" Y=\"400.0\" />"
+        "</FrameData>";
 
+    // 2. 直接挂载！没有任何复杂的逻辑，简单粗暴。
+    video_frame.p_metadata = test_xml_data;
 	ndiLib->send_send_video_async_v2(o->ndi_sender, &video_frame);
 }
 
